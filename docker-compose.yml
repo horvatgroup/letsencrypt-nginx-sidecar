@@ -1,8 +1,8 @@
 version: '2'
 services:
-  nginx-proxy:
+  sidecar_nginx_proxy:
     image: jwilder/nginx-proxy
-    container_name: nginx
+    container_name: sidecar_nginx_proxy
     restart: unless-stopped
     ports:
       - "80:80"
@@ -13,14 +13,14 @@ services:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
       - "./certs:/etc/nginx/certs"
 
-  letsencrypt:
+  sidecar_letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt
+    container_name: sidecar_letsencrypt
     restart: unless-stopped
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     volumes_from:
-      - "nginx-proxy"
+      - "sidecar_nginx_proxy"
 
 networks:
  default:
